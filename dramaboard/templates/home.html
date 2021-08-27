@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+  .col {
+    color: rgb(0, 0, 0);
+  }
+
+  h3 {
+    color: rgb(36, 36, 36);
+    font-family: 'Black Han Sans', sans-serif;
+  }
+
+  .style {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 5px 20%;
+  }
+
+  h6{
+    color:gray;
+  }
+  a {
+    background: rgb(231, 231, 231);
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    border-radius:5px;
+    padding: 5px;
+  }
+
+  .card {
+    border-radius:5px;
+  }
+
+  .title1 {
+        font-family: 'Black Han Sans', sans-serif;
+        color:rgb(255, 255, 255);
+        background-color: rgb(255, 149, 88);
+    }
+</style>
+<h2 class="title1">DRAMA BOARD</h2> <br>
+<div class="style">
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for blog in posts %}
+    <div class="col">
+      <div class="card h-100">
+        {%if blog.img %}
+        <!--image가 있을 때-->
+        <img src="{{blog.image_thumbnail.url}}">
+        {% else %}
+        <img src="{% static 'noImage.png' %}">
+        {%endif%}
+        <div class="card-body">
+          <h3 class="card-title">{{blog.title}}</h3>
+          <h6>{{blog.date|date:'Y-m-d H:i'}}</h4>
+          <p class="card-text">{{blog.score}}
+          <br>
+          {% if user.is_authenticated %}
+          <button id="{{blog.id}}" onclick="post_like(this.id)">
+              {%if request.user in blog.like.all%}
+              <!-- 로그인 한 유저가 좋아요를 누른 유저일때  -->
+              <img class="heart" id="heart{{blog.id}}" src="{% static 'heart.png' %}" alt="full_heart" width="30px" height="30px">
+              {%else%}
+              <!-- 로그인 한 유저가 좋아요를 누른 유저가 아닐 때  -->
+              <img class="heart" id="heart{{blog.id}}" src="{% static 'empty_heart.png' %}" alt="empty_heart" width="30px" height="30px">
+              {%endif%}
+          </button>
+          {% else %}
+          <button id="{{blog.id}}" onclick="alert('로그인이 필요합니다')">
+            <img class="heart" id="heart{{blog.id}}" src="{% static 'empty_heart.png' %}" alt="empty_heart" width="30px" height="30px">
+          </button>
+          {% endif %}
+          <span id="like_count{{blog.id}}">{{blog.like.count}}</span>
+          <div class="more"><a href="{% url 'detail' blog.id %}"> MORE</a></div>
+          </td>
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <br><br>
+  {% if posts.has_previous %}
+  <!--이전페이지가 있다면-->
+  <a href="?page=1">1</a> <!-- url을 그냥 써주면 됨-->
+  <a href="?page={{posts.previous_page_number}}">👈</a>
+  {% endif %}
+
+  <span>{{posts.number}}</span>
+  <span>of</span>
+  <span>{{posts.paginator.num_pages}}</span>
+
+  {% if posts.has_next %}
+  <!--다음페이지가 있다면-->
+  <a href="?page={{posts.next_page_number}}">👉</a>
+  <a href="?page={{posts.paginator.num_pages}}">{{posts.paginator.num_pages}}</a>
+  {% endif %}
+
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+  function post_like(p_id) {
+    $.ajax({
+      type: "GET",
+      url: "{% url 'post_likes' %}", 
+      data: {
+        'blog_id': p_id
+      },
+      dataType: "json",
+      success: function (response) { 
+        $('#like_count'+p_id).html(response.like_count) 
+          if (response.message == "좋아요")
+        {
+          $('#heart'+p_id).attr("src", "{% static 'heart.png' %}")
+        } else if (response.message == "좋아요 취소")
+        {
+          $('#heart'+p_id).attr("src", "{% static 'empty_heart.png' %}")
+        }
+      }
+    })
+  }
+  </script>
+{% endblock %}

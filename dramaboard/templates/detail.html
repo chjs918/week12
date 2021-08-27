@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+    .title1 {
+        font-family: 'Black Han Sans', sans-serif;
+        color:rgb(61, 61, 61);
+    }
+    a {
+        background: rgb(151, 151, 151);
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+        border-radius:5px;
+        padding: 10px;
+    }
+    .star {
+        color: yellow;
+        background-color: rgb(126, 126, 126);
+    }
+</style>
+<br>
+<h2 class=title1>{{blog.title}}</h2>
+<div class = "d1">
+    <div class="star">{{blog.score}}</div>
+    {{blog.writer}} | {{blog.date|date:'Y-m-d H:i'}} <br>
+</div>
+<br>
+{% if blog.img %}
+<p><img src="{{blog.img.url}}" alt=""></p>
+{% endif %}
+<h6>{{blog.content}}</h6>
+
+{% if user.is_authenticated %}
+        <a href ="{% url 'edit' blog.id %}">수정하기</a>
+        <a href ="{% url 'delete' blog.id %}">삭제하기</a>
+{% else %}
+    <script type="text/javascript">
+        alert('로그인이 필요합니다.');
+        window.location.href = '{% url "login" %}';
+    </script>
+{% endif %}
+
+<br>
+{% endblock %}

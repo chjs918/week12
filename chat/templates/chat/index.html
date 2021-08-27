@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Rooms</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+    .title1 {
+        font-family: 'Black Han Sans', sans-serif;
+        color:rgb(255, 255, 255);
+        background-color: rgb(255, 149, 88);
+    }
+    .title2 {
+        font-family: 'Black Han Sans', sans-serif;
+        color:rgb(61, 61, 61);
+    }
+    .input1 {
+        width:150px;
+        height:50px;
+        border-top:none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 3px solid black;
+    }
+    .input2 {
+        width:50px;
+        height:50px;
+        border-top:none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 3px solid black;
+        border-radius: 5px 5px;
+    }
+</style>
+<body>
+    <h2 class="title1">같은 드라마 취향을 가진 사람들과 소통할 수 있어요!</h2>
+    <h4 class="title2">영어로 주제를 입력해주세요</h4>
+    <input class="input1" id="room-name-input" type="text" size="30"/>
+    <input class="input2" id="room-name-submit" type="button" value="Enter"/>
+    
+    <script>
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            window.location.pathname = '/chat/' + roomName + '/';
+        };
+    </script>
+</body>
+</html>
+{% endblock %}

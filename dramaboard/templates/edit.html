@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+    .title1 {
+        font-family: 'Black Han Sans', sans-serif;
+        color:brown;
+    }
+</style>
+<h2 class="title1">Update</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {%csrf_token%} 
+    {{form.as_p}}
+    <br><br>
+    <button type ="submit">submit</button>
+</form>
+{% endblock %}

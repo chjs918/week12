@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+    .title1 {
+        font-family: 'Black Han Sans', sans-serif;
+        color:rgb(255, 255, 255);
+        background-color: rgb(255, 149, 88);
+    }
+    a {
+        background: rgb(151, 151, 151);
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+        border-radius:5px;
+        padding: 10px;
+    }
+</style>
+<h2 class="title1">Drama Map</h2>
+<a href ="{% url 'map1' %}">1. 동백꽃 필 무렵 촬영지</a> <br><br>
+<a href ="{% url 'map2' %}">2. 미스터션샤인 촬영지</a> <br><br>
+<a href ="{% url 'map3' %}">3. 도깨비 촬영지</a> <br><br>
+<a href ="{% url 'map4' %}">4. 사랑의 불시착 촬영지</a> <br><br>
+<a href ="{% url 'map5' %}">5. 로맨스는 별책부록 촬영지</a> <br><br>
+추후 업데이트 예정
+{% endblock %}

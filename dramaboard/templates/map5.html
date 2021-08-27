@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>간단한 지도 표시하기</title>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=s1fttl17tw"></script>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+    .title1 {
+        font-family: 'Black Han Sans', sans-serif;
+        color:brown;
+    }
+</style>
+<body>
+    <br>
+    <h3 class="title1">지혜의 숲</h3>
+    <div id="map" style="width:100%;height:800px;"></div><br><br>
+
+    <script>
+        //var HOME_PATH = window.HOME_PATH || '.';
+    var book = new naver.maps.LatLng(37.7082623,126.6846213),
+        map = new naver.maps.Map('map', {
+            center: book.destinationPoint(0, 500),
+            zoom: 15
+        }),
+        marker = new naver.maps.Marker({
+            map: map,
+            position: book
+        });
+
+    var contentString = [
+            '<div class="iw_inner">',
+            '   <h3>로맨스는 별책부록 촬영지</h3>',
+            '   <p>이종석, 이나영, 위하준, 정유진 | tvN드라마<br />',
+            '   </p>',
+            '</div>'
+        ].join('');
+
+    var infowindow = new naver.maps.InfoWindow({
+        content: contentString
+    });
+
+    naver.maps.Event.addListener(marker, "click", function(e) {
+        if (infowindow.getMap()) {
+            infowindow.close();
+        } else {
+            infowindow.open(map, marker);
+        }
+    });
+
+    infowindow.open(map, marker);
+    </script>
+</body>
+</html>
+{% endblock %}
